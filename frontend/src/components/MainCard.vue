@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
-import axios from 'axios';
+import axios from 'axios'
+import AppVersion from '@/components/AppVersion.vue'
 
 const inputUrl = ref("")
 const responsePrediction = ref('');
@@ -45,6 +46,9 @@ const fetchPrediction = async () => {
       </div>
       <input v-model.trim="inputUrl" placeholder="URL">
       <a @click="isValidUrl" class="button"><button>Test</button></a>
+      <div class="versioncontainer">
+        <AppVersion />
+      </div>
     </div>
   </div>
 </template>
@@ -66,7 +70,7 @@ const fetchPrediction = async () => {
   align-items: center;
 
   max-width: 60%;
-  height: 300px;
+  height: 350px;
   padding: 35px;
   margin: 35px;
 
@@ -140,5 +144,12 @@ button {
   background-color: var(--accentBg);
   box-shadow: 0px -3px 15px 0px var(--accentHi) inset;
   color: var(--accentFg);
+}
+
+.versioncontainer {
+  display: flex; 
+  width: 100%; 
+  justify-content: right; 
+  align-items: right;
 }
 </style>

@@ -11,6 +11,11 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
+app.get('/api/lib-version', (req, res) => {
+  const libVersionPackage = require('lib-version/package.json');
+  res.send(libVersionPackage.version);
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
