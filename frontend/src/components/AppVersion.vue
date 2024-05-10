@@ -4,8 +4,9 @@ import { ref, onMounted } from 'vue'
 
 const version = ref()
 
+// Once this component is mounted, fetch the app's version from the backend
 onMounted(async () => {
-    fetchVersion()
+    await fetchVersion()
 })
 
 const fetchVersion = async () => {

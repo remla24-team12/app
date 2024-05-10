@@ -3,9 +3,10 @@ import { ref } from 'vue'
 import axios from 'axios'
 import AppVersion from '@/components/AppVersion.vue'
 
-const inputUrl = ref("")
-const responsePrediction = ref('');
+const inputUrl = ref("") // User input
+const responsePrediction = ref('') // Backend response
 
+// Test if URL given by the user is valid using a RegEx
 const isValidUrl = async () => {
   const pattern =
   /(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|((https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?)|(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})?/g;
@@ -14,26 +15,24 @@ const isValidUrl = async () => {
   
   // Invalid URL, ask the user to change it
   if (!isValid) {
-    alert('Please enter a valid URL.');
+    alert('Please enter a valid URL');
     return
   }
 
   // Valid URL, make a request to the backend
-  // alert(inputUrl.value)
   await fetchPrediction()
-  alert(responsePrediction.value)
 }
 
+// Fetch prediction of URL Phishing CNN 
 const fetchPrediction = async () => {
   try {
-    const response = await axios.get('http://localhost:3000/');
+    const response = await axios.get('http://localhost:3000/api/prediction');
     responsePrediction.value = response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
-    responsePrediction.value = 'Failed to fetch data';
+    responsePrediction.value = '';
   }
 }
-
 </script>
 
 <template>
@@ -50,6 +49,8 @@ const fetchPrediction = async () => {
         <AppVersion />
       </div>
     </div>
+
+    <p v-if="responsePrediction">{{ responsePrediction }}</p>
   </div>
 </template>
 
