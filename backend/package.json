@@ -6,6 +6,7 @@
     "start": "node src/index.js"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "lib-version": "github:remla24-team12/lib-version#v0.0.3"
   }
 }
