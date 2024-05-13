@@ -2,7 +2,7 @@ FROM node:16
 
 WORKDIR /app
 
-COPY package*.json /app
+COPY /backend/package*.json /app
 
 RUN ls -la /app
 
