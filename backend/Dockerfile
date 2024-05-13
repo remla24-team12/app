@@ -8,7 +8,7 @@ RUN ls -la /app
 
 RUN npm install
 
-COPY . .
+COPY /backend /app
 
 EXPOSE 3000
 

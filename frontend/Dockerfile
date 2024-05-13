@@ -8,7 +8,7 @@ RUN ls -la /app
 
 RUN npm install
 
-COPY . .
+COPY /frontend /app
 
 EXPOSE 8080
 
