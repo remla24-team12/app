@@ -26,7 +26,9 @@ const isValidUrl = async () => {
 // Fetch prediction of URL Phishing CNN 
 const fetchPrediction = async () => {
   try {
-    const response = await axios.get('http://localhost:3000/api/prediction');
+    const response = await axios.post('http://localhost:3000/api/prediction', {
+      url: inputUrl.value
+    });
     responsePrediction.value = response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
