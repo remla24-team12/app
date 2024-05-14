@@ -21,11 +21,12 @@ app.get('/api/lib-version', (req, res) => {
 });
 
 // Get prediction from model-service API (forward request)
-// TODO: Communicate with model-service through Docker
 app.post('/api/prediction', (req, res) => {
   const modelServiceApiUrl = 'http://127.0.0.1:5000/test';
 
-  axios.get(modelServiceApiUrl)
+  axios.post(modelServiceApiUrl, {
+    input_data: { url: req.body.url }
+  })
   .then(response => {
     res.send(response.data);
   })
@@ -33,17 +34,6 @@ app.post('/api/prediction', (req, res) => {
     console.error('Error calling the model-service API:', error);
     res.status(500).send('Internal Server Error');
   });
-
-  // axios.post(modelServiceApiUrl, {
-  //   input_data: { url: req.body.url }
-  // })
-  // .then(response => {
-  //   res.send(response.data);
-  // })
-  // .catch(error => {
-  //   console.error('Error calling the model-service API:', error);
-  //   res.status(500).send('Internal Server Error');
-  // });
 });
 
 // Host the API on the specified port
