@@ -8,10 +8,9 @@ RUN ls -la /app
 
 RUN npm install
 
-COPY /backend /app
+COPY /backend/* /app
 
-WORKDIR /app/backend
 
 EXPOSE 3000
 
-CMD ["node", "backend/src/index.js"]
+CMD ["node", "src/index.js"]
