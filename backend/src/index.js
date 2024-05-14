@@ -39,4 +39,4 @@ app.post('/api/prediction', (req, res) => {
 // Host the API on the specified port
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
-});    console.error('Error fetching data:', error);
+});
