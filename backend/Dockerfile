@@ -10,6 +10,8 @@ RUN npm install
 
 COPY /backend /app
 
+WORKDIR /app/backend
+
 EXPOSE 3000
 
-CMD ["node", "src/index.js"]
+CMD ["node", "backend/src/index.js"]

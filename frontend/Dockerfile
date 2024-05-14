@@ -10,6 +10,10 @@ RUN npm install
 
 COPY /frontend /app
 
+RUN ls -la /app
+
+WORKDIR /app/frontend
+
 EXPOSE 8080
 
 CMD ["npm", "run", "serve"]
