@@ -2,15 +2,13 @@ FROM node:16
 
 WORKDIR /app
 
-COPY /frontend/package*.json /app
+COPY package*.json /app
 
 RUN ls -la /app
 
 RUN npm install
 
-COPY /frontend/* /app
-
-RUN ls -la /app
+COPY . /app
 
 EXPOSE 8080
 
