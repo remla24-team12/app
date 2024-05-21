@@ -15,6 +15,11 @@ jobs:
     steps:
     - name: Check out the code
       uses: actions/checkout@v3
+    
+    - name: Create .npmrc file
+      run: |
+        echo "@remla24-team12:registry=https://npm.pkg.github.com/" > ./backend/.npmrc
+        echo "//npm.pkg.github.com/:_authToken=${{ secrets.REMLA_TOKEN }}" >> ./backend/.npmrc
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
