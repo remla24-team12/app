@@ -18,6 +18,8 @@ git clone https://github.com/remla24-team12/app.git
 
 2. Install NPM packages for fronted and backend. 
 
+In the backend folder in .npmrc, replace the AUTH_TOKEN with the REMLA_SECRET from the repo
+
 Run the following commands in the terminal inside the project directory:
 
 ```bash
