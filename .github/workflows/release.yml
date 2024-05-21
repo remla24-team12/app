@@ -1,6 +1,10 @@
 name: Build and Push Docker Image
 
 on:
+  workflow_run:
+    workflows: ["Auto Versioning"]
+    types:
+      - completed
   push:
     branches:
       - main
@@ -15,6 +19,13 @@ jobs:
     steps:
     - name: Check out the code
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: Get latest tag
+      id: get_version
+      run: echo "VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
+  
     
     - name: Create .npmrc file
       run: |
@@ -37,7 +48,9 @@ jobs:
         context: ./frontend/
         file: ./frontend/Dockerfile
         push: true
-        tags: ghcr.io/${{ github.repository_owner }}/frontend:latest
+        tags: |
+          ghcr.io/${{ github.repository_owner }}/frontend:latest
+          ghcr.io/${{ github.repository_owner }}/frontend:${{ env.VERSION }}
     
     - name: Build and push backend
       uses: docker/build-push-action@v5
@@ -45,7 +58,9 @@ jobs:
         context: ./backend/
         file: ./backend/Dockerfile
         push: true
-        tags: ghcr.io/${{ github.repository_owner }}/backend:latest
+        tags: |
+          ghcr.io/${{ github.repository_owner }}/backend:latest
+          ghcr.io/${{ github.repository_owner }}/backend:${{ env.VERSION }}
 
     - name: Verify pushed image
       run: echo "Image pushed!"
