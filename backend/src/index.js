@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 
 // Get version of 'lib-version' api
 app.get('/api/lib-version', (req, res) => {
-  const libVersionPackage = require('lib-version/package.json');
+  const libVersionPackage = require('@remla24-team12/lib-version');
   res.send(libVersionPackage.version);
 });
 
