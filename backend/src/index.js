@@ -22,7 +22,7 @@ app.get('/api/lib-version', (req, res) => {
 
 // Get prediction from model-service API (forward request)
 app.post('/api/prediction', (req, res) => {
-  const modelServiceApiUrl = 'http://127.0.0.1:5000/predict';
+  const modelServiceApiUrl = 'http://model-service:5000/predict';
 
   axios.post(modelServiceApiUrl, {
     input_data: { url: req.body.url }
