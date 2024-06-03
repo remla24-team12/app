@@ -36,6 +36,25 @@ app.post('/api/prediction', (req, res) => {
   });
 });
 
+// forward request to model-service API
+app.post('/api/label', (req, res) => {
+  const modelServiceApiUrl = 'http://model-service:5000/label';
+
+  axios.post(modelServiceApiUrl, {
+    input_data: { 
+      url: req.body.url,
+      newLabel: req.body.newLabel
+    }
+  })
+  .then(response => {
+    res.send(response.data);
+  })
+  .catch(error => {
+    console.error('Error calling the model-service API:', error);
+    res.status(500).send('Internal Server Error');
+  });
+});
+
 // Host the API on the specified port
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
