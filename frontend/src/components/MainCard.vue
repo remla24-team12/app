@@ -2,9 +2,12 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import AppVersion from '@/components/AppVersion.vue'
+import PredictionCard from '@/components/PredictionCard.vue'
 
 const inputUrl = ref("") // User input
 const responsePrediction = ref('') // Backend response
+const lastSubmittedURL = ref(""); // Track the last submitted url, such that we can use this for updating the corresponding label 
+
 
 // Test if URL given by the user is valid using a RegEx
 const isValidUrl = async () => {
@@ -19,6 +22,8 @@ const isValidUrl = async () => {
     return
   }
 
+  lastSubmittedURL.value = inputUrl.value
+
   // Valid URL, make a request to the backend
   await fetchPrediction()
 }
@@ -30,6 +35,7 @@ const fetchPrediction = async () => {
       url: inputUrl.value
     });
     responsePrediction.value = response.data;
+
   } catch (error) {
     console.error('Error fetching data:', error);
     responsePrediction.value = '';
@@ -46,13 +52,13 @@ const fetchPrediction = async () => {
         <p>Please enter one here to see if it is valid:</p>
       </div>
       <input v-model.trim="inputUrl" placeholder="URL">
-      <a @click="isValidUrl" class="button"><button>Test</button></a>
+      <a @click="isValidUrl" class="button"><button>Predict</button></a>
       <div class="versioncontainer">
         <AppVersion />
       </div>
     </div>
 
-    <p v-if="responsePrediction">{{ responsePrediction }}</p>
+    <PredictionCard v-if="responsePrediction" :prediction="responsePrediction" :url="lastSubmittedURL" />
   </div>
 </template>
 
@@ -67,6 +73,7 @@ const fetchPrediction = async () => {
 
 .card {
   min-height: 200px;
+  min-width: 25%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
