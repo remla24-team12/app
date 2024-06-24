@@ -10,6 +10,8 @@ RUN npm install
 
 COPY . /app
 
+ENV APP_API_URL=http://localhost:8080
+
 EXPOSE 8080
 
 CMD ["npm", "run", "serve"]
