@@ -11,6 +11,7 @@ RUN npm install
 COPY . /app
 
 ENV VUE_APP_API_URL=http://localhost:8080
+ENV VUE_APP_PUBLIC_PATH=/
 
 EXPOSE 8080
 
