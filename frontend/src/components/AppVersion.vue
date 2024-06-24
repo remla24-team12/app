@@ -11,7 +11,7 @@ onMounted(async () => {
 
 const fetchVersion = async () => {
   try {
-    const response = await axios.get('http://localhost:3000/api/lib-version');
+    const response = await axios.get(`${process.env.APP_API_URL}/api/lib-version`);
     version.value = response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
