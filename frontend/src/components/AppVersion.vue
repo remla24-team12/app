@@ -14,7 +14,7 @@ const fetchVersion = async () => {
   console.log(process.env)
   console.log(process.env.APP_API_URL)
   try {
-    const response = await axios.get(`${process.env.APP_API_URL}/api/lib-version`);
+    const response = await axios.get(`${process.env.VUE_APP_API_URL}/api/lib-version`);
     version.value = response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
