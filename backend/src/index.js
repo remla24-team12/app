@@ -9,24 +9,6 @@ const port = 3000;
 const register = new promClient.Registry();
 promClient.collectDefaultMetrics({ register });
 
-const totalResponses = new promClient.Counter({
-  name: 'backend_total_responses',
-  help: 'Total number of HTTP responses',
-  registers: [register]
-});
-
-const okResponses = new promClient.Counter({
-  name: 'backend_ok_responses',
-  help: 'Total number of 200 OK responses',
-  registers: [register]
-});
-
-const okResponsePercentage = new promClient.Gauge({
-  name: 'backend_ok_response_percentage',
-  help: 'Percentage of 200 OK responses',
-  registers: [register]
-});
-
 // Define a Counter
 const totalRequests = new promClient.Counter({
   name: 'backend_total_requests',
@@ -53,44 +35,64 @@ const responseTimes = new promClient.Histogram({
   registers: [register]
 });
 
-// Define a Gauge for active requests
-const activeRequests = new promClient.Gauge({
-  name: 'backend_active_requests',
-  help: 'Number of active requests',
+const availableRam = new promClient.Gauge({
+  name: 'backend_available_ram_bytes',
+  help: 'Available system memory in bytes',
+  labelNames: ['environment'],
   registers: [register]
 });
+
+setInterval(() => {
+  const freeMemory = os.freemem();
+  availableRam.set({ environment: 'production' }, freeMemory);
+}, 5000);
 
 app.use(cors());
 app.use(express.json());
 
 // Middleware to increase counters, observe response time, and track active requests
+const totalResponses = new promClient.Counter({
+  name: 'backend_total_responses',
+  help: 'Total number of HTTP responses',
+  labelNames: ['status'],  // Label for categorizing by HTTP status
+  registers: [register]
+});
+
+const okResponses = new promClient.Counter({
+  name: 'backend_ok_responses',
+  help: 'Total number of 200 OK responses',
+  labelNames: ['status'],  // Although this seems redundant as it tracks only 200 OK, it maintains consistency
+  registers: [register]
+});
+
+// Now update the code where you increment these counters to specify the labels
 app.use((req, res, next) => {
   const route = req.path;
-  const start = process.hrtime(); // Start timing when request is received
-  console.log(`Request received for route: ${route}`);
-  activeRequests.inc(); // Increment active requests
-
+  const start = process.hrtime();
+  
   res.on('finish', () => {
     const diff = process.hrtime(start);
-    const elapsedTimeInSec = diff[0] + diff[1] / 1e9; // Convert to seconds
-    responseTimeSummary.observe({ route }, elapsedTimeInSec); // Record in Summary
+    const elapsedTimeInSec = diff[0] + diff[1] / 1e9;
 
-    console.log(`Incrementing counter for route: ${route}`);
-    totalRequests.inc({ route });
-    activeRequests.dec(); // Decrement active requests
-    console.log(`Request processing finished for route: ${route}`);
+    // Use route as a label for detailed tracking
+    responseTimeSummary.observe({ route }, elapsedTimeInSec);
+    responseTimes.observe({ route }, elapsedTimeInSec);
+    activeRequests.dec();
+
+    // Update response counters with status code labels
+    totalResponses.inc({ status: res.statusCode.toString() });
+    if (res.statusCode === 200) {
+      okResponses.inc({ status: '200' });
+    }
+    
+    // Calculate and update percentage (optional enhancement)
+    updateOkResponsePercentage();  // Assuming this function recalculates and updates the gauge
   });
 
+  activeRequests.inc();
   next();
 });
 
-
-function updateOkResponsePercentage() {
-  const total = totalResponses.hashMap[''].value;
-  const okTotal = okResponses.hashMap[''].value;
-  const percentage = total === 0 ? 0 : (okTotal / total) * 100;
-  okResponsePercentage.set(percentage); // Set the gauge to the current percentage
-}
 
 
 // Metric endpoint for Prometheus to scrape
