@@ -13,7 +13,8 @@ promClient.collectDefaultMetrics({ register });
 const totalRequests = new promClient.Counter({
   name: 'total_requests',
   help: 'Total number of requests received',
-  labelNames: ['route']
+  labelNames: ['route'],
+  registers: [register]
 });
 
 // Define a Histogram for response times
@@ -21,7 +22,8 @@ const responseTimes = new promClient.Histogram({
   name: 'response_times',
   help: 'Histogram of response times by route',
   labelNames: ['route'],
-  buckets: [0.1, 0.5, 1, 2, 5] // in seconds
+  buckets: [0.1, 0.5, 1, 2, 5], // in seconds
+  registers: [register]
 });
 
 app.use(cors());
@@ -31,10 +33,11 @@ app.use(express.json());
 app.use((req, res, next) => {
   const route = req.path;
   const end = responseTimes.startTimer({ route });
-  console.log("COUNTING", req, res)
+  console.log("COUNTING")
   res.on('finish', () => {
     totalRequests.inc({ route }); // Increment the counter for the route
     end(); // Stop the timer for the histogram when the response is finished
+    console.log("Finished!")
   });
 
   next();
