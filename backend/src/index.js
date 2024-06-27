@@ -96,13 +96,13 @@ app.use((req, res, next) => {
 
 
 // Metric endpoint for Prometheus to scrape
-app.get('/metrics', async (req, res) => {
+app.get('/api/metrics', async (req, res) => {
   res.set('Content-Type', register.contentType);
   res.end(await register.metrics());
 });
 
 // Dummy api request
-app.get('/', (req, res) => {
+app.get('/api/', (req, res) => {
   res.send('Hello World!');
 });
 
@@ -129,7 +129,7 @@ app.post('/api/prediction', (req, res) => {
 });
 
 // Test endpoint to manually increment metrics
-app.get('/test', (req, res) => {
+app.get('/api/test', (req, res) => {
   totalRequests.inc({ route: 'test' });
   responseTimes.observe({ route: 'test' }, 1.5); // 1.5 seconds
   res.send('Test metrics incremented');
