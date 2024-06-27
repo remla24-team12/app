@@ -94,7 +94,6 @@ app.use((req, res, next) => {
     }
     
     // Calculate and update percentage (optional enhancement)
-    updateOkResponsePercentage();  // Assuming this function recalculates and updates the gauge
   });
 
   activeRequests.inc();
