@@ -90,9 +90,6 @@ app.use((req, res, next) => {
 
     // Update response counters with status code labels
     totalResponses.inc({ status: res.statusCode.toString() });
-    if (res.statusCode === 200) {
-      okResponses.inc({ status: '200' });
-    }
 
     // Calculate and update percentage (optional enhancement)
   });
