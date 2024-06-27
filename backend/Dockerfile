@@ -11,6 +11,7 @@ RUN npm install
 
 COPY . /app/
 
+ENV MODEL_SERVICE_URL=http://localhost:5000
 
 EXPOSE 3000
 
