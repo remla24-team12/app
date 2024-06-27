@@ -51,6 +51,14 @@ const activeRequests = new promClient.Gauge({
   registers: [register]
 });
 
+const totalResponses = new promClient.Counter({
+  name: 'backend_total_responses',
+  help: 'Total number of HTTP responses',
+  labelNames: ['status'],
+  registers: [register]
+});
+
+
 // Periodically update the available RAM gauge
 setInterval(() => {
   const freeMemory = os.freemem();
