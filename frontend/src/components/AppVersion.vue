@@ -24,7 +24,7 @@ const fetchVersion = async () => {
 </script>
 
 <template>
-    <p>v: {{ version }}</p>
+    <p>{{ version }}</p>
 </template>
 
 <style scoped>
