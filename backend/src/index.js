@@ -4,6 +4,7 @@ const app = express();
 const axios = require('axios');
 const promClient = require('prom-client');
 const port = 3000;
+const os = require('os');
 
 // Prometheus metrics registry
 const register = new promClient.Registry();
