@@ -71,3 +71,7 @@ On every push or pull request to the `main` branch, the workflow:
 The `.gitignore` file specifies files that Git should ignore. In this project, IntelliJ IDEA project files (`*.iml`, `.idea`) are ignored.
 
 Please note that you might need to adjust the setup and run instructions based on the specific requirements of your project.
+
+## Note
+To run the docker compose locally, while building the images, will not work, unless you have access to a secret. The docker-compose
+is for development purposes.
