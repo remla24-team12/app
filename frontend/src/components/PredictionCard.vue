@@ -20,7 +20,7 @@ const updateLabel = async () => {
 
     // Post the new label to the API
     try {
-        await axios.post('http://localhost:3000/api/label', {
+        await axios.post(`${process.env.VUE_APP_API_URL}/api/label`, {
             url: props.url,
             newLabel: newLabel
         });
