@@ -44,13 +44,13 @@ app.use((req, res, next) => {
 });
 
 // Metric endpoint for Prometheus to scrape
-app.get('/metrics', (req, res) => {
+app.get('/metrics', async (req, res) => {
   res.set('Content-Type', register.contentType);
   console.log(register)
   console.log(register.metrics())
   console.log(totalRequests)
   console.log(responseTimes)
-  res.send(register.metrics());
+  res.send(await register.metrics());
 });
 
 // Your existing app code
