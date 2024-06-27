@@ -9,6 +9,7 @@
     "@remla24-team12/lib-version": "^0.0.10",
     "axios": "^1.6.8",
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "prom-client": "^15.1.2"
   }
 }
