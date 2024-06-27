@@ -31,7 +31,7 @@ app.use(express.json());
 app.use((req, res, next) => {
   const route = req.path;
   const end = responseTimes.startTimer({ route });
-
+  console.log("COUNTING", req, res)
   res.on('finish', () => {
     totalRequests.inc({ route }); // Increment the counter for the route
     end(); // Stop the timer for the histogram when the response is finished
