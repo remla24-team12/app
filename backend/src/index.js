@@ -43,6 +43,13 @@ const availableRam = new promClient.Gauge({
   registers: [register]
 });
 
+// Define a Gauge for active requests
+const activeRequests = new promClient.Gauge({
+  name: 'backend_active_requests',
+  help: 'Number of active requests',
+  registers: [register]
+});
+
 setInterval(() => {
   const freeMemory = os.freemem();
   availableRam.set({ environment: 'production' }, freeMemory);
